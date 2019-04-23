@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <title>Zampi line chart</title>
+</head>
+<body>
+    <div class="container">
+        <h3 id="title"></h3>
+        <p id="description"></p>
+        <canvas id="myChart1"></canvas>
+        <canvas id="myChart2"></canvas>
+        <canvas id="myChart3"></canvas>
+        <canvas id="myChart4"></canvas>
+    </div>
+
+    <script>
+       
+        let myChart1 = document.getElementById('myChart1').getContext('2d');
+        let myChart2 = document.getElementById('myChart2').getContext('2d');
+        let myChart3 = document.getElementById('myChart1').getContext('2d');
+        let myChart4 = document.getElementById('myChart2').getContext('2d');
+        
+        let count = 4;
+
+        document.getElementById('title').innerHTML = "This is a test survey";
+        document.getElementById('description').innerHTML = "This is the description";
+
+        let foo = JSON.parse('{"q1":{"question":"What is your favorite superhero?","type":"select","answercount":"2","a1":"Spiderman","a1r":"40","a2":"Superman","a2r":"12"},"q2":{"question":"What is your favorite car?","type":"mc","answercount":"2","a1":"rav4","a1r":"120","a2":"forester","a2r":"19","a3":"rogue","a3r":"0","a4":"cr-v","a4r":"0"},"q3":{"question":"What is your favorite pizza?","type":"slider","answercount":"3","a1":"ew, pizza?","a1r":"12","a2":"yum. love it all!","a2r":"45","a3":"I only eat pizza when I am in Italy","a3r":"2", "number":"3"},"q4":{"question":"What is your favorite pizza?","type":"slider","answercount":"3","a1":"love it!","a1r":"12","a2":"yum. love it all!","a2r":"45","a3":"I only eat pizza when I am in spain","a3r":"2","number":"4"}}')
+           
+        count = count + 1;
+        for(var x = 1; x < count; x++){
+
+            var question = foo['q'+x]; 
+            var answerCount = question.answercount; 
+            console.log(x);
+
+            if(question.type == "slider"){
+
+                var labels = [];
+                var data = [];
+                var label = question.question
+                answerCount = parseInt(answerCount)+1;
+
+                for(var i = 1; i < answerCount; i++){
+                    labels.push(question["a"+i]);
+                    data.push(question["a"+i+"r"]);
+                }
+
+                if(question.number == 3){
+                    let zampiChart = new Chart(myChart1, {
+                    type: 'line',
+                    data:{
+                        labels: labels,
+                        datasets: [{
+                            label: label,
+                            data: data,
+                            backgroundColor: '#ffc107'
+                        }]
+                    },
+                    options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
+                            }
+                        }
+                    })
+                }else{
+                    let zampiChart = new Chart(myChart2, {
+                    type: 'line',
+                    data:{
+                        labels: labels,
+                        datasets: [{
+                            label: label,
+                            data: data,
+                            backgroundColor: '#ffc107'
+                        }]
+                    },
+                    options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
+                            }
+                        }
+                    })
+                }
+
+            }
+
+        }
+        
+    </script>
+</body>
+</html>
+
